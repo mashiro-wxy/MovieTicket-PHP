@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>购票主页</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery3.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("body").on("click", ".btn-primary", function () {
+                var movie_id = $(this).val();
+                var date = "2020-4-26";
+                location.href = "../cinema/get_cinema_list_by_movie?" +
+                    "movie_id=" + movie_id + "&date=" + date
+            });
+            // $(".container")
+            var list = new Array();
+            $(".selectMovie").click(function () {
+                var type = $(this).children("a").html();
+                if (type == "全部")
+                    window.location.href = "../main_page/show_main_page_info";
+                $("#movie_list").empty();
+                $.ajax({
+                    data　: {"movie_type" : type},
+                    type:'get',
+                    dataType:"json",
+                    url: "../main_page/get_movie_list",
+                    success:function (data) {
+                        console.log(data);
+                        list = data;
+                        type1();
+                    },error:function (data) {
+                        console.log(data);
+                    }
+                })
+            });
+            function type1() {
+                var ht = "";
+                for(var i = 0; i < list.length; i++){
+                    if (i % 4 == 0){
+                        ht += "<div class=\"col-md-3 offset-1\" >";
+                    }
+                    ht += "<div class='row' style='margin-top:20px;'>" +
+                        "<img src='__PUBLIC__/static"+list[i]["main_photo"] +"'  class='img-thumbnail'  style='width:40%'>" +
+                        "<div style='padding-left: 10px;'>" +
+                        " <h4>"+ list[i]["movie_name"]+"</h4>" +
+                        " <h6>"+list[i]["movie_length"]+"分钟 - "+list[i]["type"]+"</h6>" +
+                        " <h6 style='color: #0baa3f'>";
+                    if (list[i]["plot"].length >= 8)
+                        ht += list[i]["plot"].substring(0, 8);
+                    else
+                        ht += list[i]["plot"];
+                    ht += "</h6>" +
+                        "<button type='button' class='btn btn-primary '" +
+                        "style='border-radius: 20px;width: 120px;height: 40px;background-color: #00BBFF'" +
+                        "data-toggle='button' value='"+list[i]["movie_id"]+"'> <h5>选座购票</h5>" +
+                        "</button>" +
+                        "</div>" +
+                        "</div>";
+                    if (i % 3 == 0 && i > 0)
+                        ht += "</div>";
+                }
+                if (list.length > 0){
+                    ht += "</div>";
+                }else{
+                    ht = "<h1>暂无该类型的影片</h1>"
+                }
+                $("#movie_list").html(ht);
+            }
+        })
+    </script>
+</head>
+<style>
+    #man{
+        cursor: pointer;
+        /*color: white;*/
+        font-size: 20px;
+        /*border: #9d9d9d 1px solid;*/
+        /*box-shadow: 0 0 5px #bfbfbf;*/
+    }
+</style>
+<body>
+<br><br>
+<div class="container">
+    <div class="row">
+        <div style="background-color: #f17410;height: 60px;width: 15px;">
+        </div>
+        <div  style="padding-left: 15px;padding-top: 10px;padding-right: 10px;"><h2>正在热映<?php echo count($hot_movie_list) ?>部</h2></div>
+
+        <div style="padding-left: 30px;padding-top: 20px;" class="selectMovie"><a href="#">全部</a>  |</div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">动画 </a>  | </div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">家庭</a>  | </div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">喜剧</a>  |</div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">恐怖</a>  |</div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">动作</a>  |</div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">战争</a>  |</div>
+        <div style="padding-top: 20px;" class="selectMovie"> &nbsp;<a href="#">爱情</a>  </div>
+        <div style="margin-left: 200px;padding-top: 10px; " >
+            <div id="man"><a href="../main_page/show_person" class="btn">
+                <img src="__PUBLIC__/static/img/man.jpg" width="50px" height="50px">  <span class="person" >
+                        个人主页
+            </span></a></div>
+        </div>
+        <hr style="background-color: #1b1e21;height: 1px;width: 100%;margin-top: 0px;">
+    </div>
+</div>
+
+<div class="container" id="movie_list">
+    <div class="row">
+        {if ($if == 0)}
+        <div class="col-md-4">
+            <img src="__PUBLIC__/static{$a_hot_movie.main_photo}"  class="img-thumbnail" >
+
+            <div class="row" style="padding-top: 5px;">
+                <button type="button" class="btn btn-primary btn-lg"disabled="disabled" style="color: #ffffff;
+                    background-color: #0baa3f;border-radius: 0px;height: 100px;width: 90px;margin-left: 18px;">
+                    <h6>总评分</h6><h4>{$a_hot_movie.score}</h4>
+                </button>
+                <div style="padding-left: 10px;">
+                    <h3>{$a_hot_movie.movie_name}</h3>
+                    <h5>{$a_hot_movie.movie_length}分钟 - {$a_hot_movie.type}</h5>
+                    <h4 style="color: #0baa3f">"甄子丹过招美军"</h4>
+                </div>
+                <button type="button" class="btn btn-primary offset-6"
+                        style="border-radius: 20px;width: 150px;height: 45px;background-color: #00BBFF"
+                        data-toggle="button" value="{$a_hot_movie.movie_id}"><h4>选座购票</h4>
+                </button>
+            </div>
+        </div>
+        {/if}
+        {foreach name="hot_movie_list" item="it" key="k" }
+        {if ($k % 4 == 0)}
+        <div class="col-md-3 offset-1" >
+
+            {/if}
+            <div class="row" style="margin-top:20px;">
+                <img src="__PUBLIC__/static{$it.main_photo}"  class="img-thumbnail"  style="width:40%">
+                <div style="padding-left: 10px;">
+                    <h4>{$it.movie_name}</h4>
+                    <h6>{$it.movie_length}分钟 - {$it.type}</h6>
+                    <h6 style="color: #0baa3f"><?php $plot = $it["plot"];
+                        if (strlen($plot) >= 30 )
+                        echo substr($plot, 0, 21) . '。。。';
+                        else
+                        echo $plot;?></h6>
+                    <button type="button" class="btn btn-primary "
+                            style="border-radius: 20px;width: 120px;height: 40px;background-color: #00BBFF"
+                            data-toggle="button" value="{$it.movie_id}"> <h5>选座购票</h5>
+                    </button>
+                </div>
+            </div>
+            {if ($k % 3 == 0 && $k > 0)}
+        </div>
+        {/if}
+        {/foreach}
+        {if (count($hot_movie_list) > 0)}
+    </div>
+    {/if}
+</div>
+</div>
+</div>
+</body>
+</html>

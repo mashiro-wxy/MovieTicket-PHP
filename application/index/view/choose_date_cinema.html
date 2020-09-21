@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btn-primary").click(function () {
+
+                var movie_id = parseInt($("#movie_id").val());
+                var date = "'2020-04-26'";
+                var cinema_id = parseInt($(this).val());
+                $.ajax({
+                    data　: {"movie_id" : movie_id, "order_date" : date,"cinema_id" : cinema_id},
+                    type:'get',
+                    dataType:"json",
+
+                    url: "../film_schedule/get_schedule_list",
+                    success:function (data) {
+                        console.log(data);
+                        var buy_info = data;
+                        var n;$("#buy_info").empty();
+                        for(n =  0; n < buy_info.length ; n++){
+
+                            var buy_time =
+                                "<li class=" + "list-group-item>"
+                                + "时间：" + buy_info[n].schedule_time
+                                +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                +"价格："+buy_info[n].actual_price
+                                +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                +"放映厅："+buy_info[n].screening_room_name
+                                +" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+                                + "<button class='btn-primary btn1' style='margin-left: 80px;border-radius: 5px;'" +
+                                " id='f" + buy_info[n].schedule_id + "' >选座购票</button>" +"</li>";
+                            $("#buy_info").append(buy_time);
+                        }
+                    }
+                })
+            });
+            $("body").on("click", ".btn1", function () {
+                var i = this.id;
+                var s = i.substring(1, i.length);
+                window.location.href = "../film_schedule/show_room_seat?schedule_id=" + s;
+            })
+        })
+    </script>
+
+    <style>
+        .ul01 {
+            width: 795px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #e7e7e7;
+            background-color: #f3f3f3;
+        }
+
+        .li01 {
+            float: left;
+            width: 180px;
+        }
+
+        a {
+            display: block;
+            color: #666;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        a.active {
+            color: white;
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<br><br>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3" >
+            <div  style="border: 1px solid;border-radius: 20px;box-shadow: 1px 1px 1px #888888;height: 500px;">
+                <img src="__PUBLIC__/static/{$a_movie_info.main_photo}"  style="width: 90%;border-radius: 10px;margin: 12px;" >
+                <br><br>
+                <div style="margin-left: 12px;">
+                    <h6>上映时间: <?php $time = $a_movie_info["start_time"];
+                                  echo substr($time, 0, 4) . '年' . substr($time, -5 , -3) . '月' . substr($time, 8, 10) . '日'?></h6>
+                    <h6>类型: {$a_movie_info.type}</h6>
+                    <h6>时长: {$a_movie_info.movie_length}分钟</h6>
+                    <h6>地区: {$a_movie_info.country}</h6>
+                </div>
+            </div>
+            <input type="hidden" value="{$a_movie_info.movie_id}" id="movie_id">
+            <div class="" style="margin-top: 20px;">
+                <h2>影片介绍</h2>
+                <p>{$a_movie_info.plot}</p>
+                <p><a class="btn-default" href="#" role="button">了解更多 &raquo;</a></p>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+
+            <div class="container theme-showcase" role="main">
+                <div class="jumbotron" style="padding-top: 20px;padding-bottom: 20px;">
+                    <h1>{$a_movie_info.movie_name} (2019)</h1>
+                    <!--<h3>Ip Man 4</h3>-->
+                    <br>
+                    <h4 style="background: rgba(21,12,33,0.85) ;color: #edeff1">{$a_movie_info.movie_length}分钟 - {$a_movie_info.type} - <?php $time = $a_movie_info["start_time"];
+                                  echo substr($time, 0, 4) . '年' . substr($time, -5 , -3) . '月' . substr($time, 8, 10) . '日'?>{$a_movie_info.country}上映 - 2D/中国巨幕</h4>
+                    <div class="row" style="padding-left: 15px">
+                        <img src="__PUBLIC__/static/img/1.png" style="width: 30px;height: 30px">
+                        <h3>杭州</h3>
+                        <h4 href="" style="padding-top: 3px;">[切换]  | </h4>
+                        <h4 style="padding-top: 3px;">&nbsp;今日<?php echo count($cinema_list) ?>家影院 </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 " style="padding-left: 15px;width: 100%;margin-top: 0px;">
+                <ul class="nav nav-pills">
+                    <li><a class="active" href="#">{$dates['one']}</a></li>
+                    <li><a href="#">{$dates['two']}</a></li>
+                    <li><a href="#">{$dates['three']}</a></li>
+                    <li><a href="#">{$dates['four']}</a></li>
+                </ul>
+            </div>
+            <br>
+            <div class="col-md-9" style="padding-left: 15px;padding-top: 5px;">
+                <div class="row" style="width: 1000px;">
+                    <div style="padding-left: 15px;">
+                        <h4>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="#1" value="option1"> 购票
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="#2" value="option2"> 停车场
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="#3" value="option3"> 3D
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="#4" value="option4"> IMAX
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="#5" value="option5"> 4DX
+                            </label>
+                        </h4>
+                    </div>
+                    <div class='col-sm-3' style="margin-left: 180px; ">
+                        <span class="inputSearch" >
+                            <input type="text" class="form-control input-sm"
+                                   style="border-radius: 20px; "
+                                   name="search" value="" placeholder="搜索影院" autocomplete="on"/>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            {foreach name="cinema_list" item="it" key="k" }
+            <div class="row">
+                <div class="col-md-9 " style="padding-left: 30px;">
+                    <h2>{$it.cinema_name}</h2>
+                    <div class="row">
+                        <h5 style="color: #ff9c10;padding-left: 15px">   好评度{$it.score} &nbsp;</h5><h5>|&nbsp;{$it.adress_detail}</h5>
+                    </div>
+                    <div class="row">
+                        <div style="color: #5a6268;padding-left: 15px"> 可退票 | </div>
+                        <div style="color: #5a6268"> &nbsp;可改签 | </div>
+                        <div style="color: #5a6268"> &nbsp;观影小食 | </div>
+                        <div style="color: #5a6268"> &nbsp;艺术影厅  </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3" style="">
+                    <br><br>
+                    <button type="button" class="btn btn-primary" style="border-radius: 20px;width: 120px;" data-toggle="modal" data-target="#myModal"
+                            value="{$it.cinema_id}"> 点击购票
+                    </button>
+                </div>
+                <hr style="width: 94%;height: 1ch;border-top: solid #ACC0D8 1px;margin-left: 30px;">
+            </div>
+            {/foreach}
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">详细信息</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <ul class="list-group" id="buy_info">
+                    </ul>
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

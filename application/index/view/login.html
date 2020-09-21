@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>手机电影商城登录</title></head>
+<style>
+    div{display: block;margin: 0;padding: 0;}
+    .top{margin: 0 auto 25px;height: auto}
+    .tip{width: 100%;margin:auto;overflow: hidden;padding: 22px 0 20px;zoom: 1;background-color: #ffffff;text-decoration:none;}
+    .tiptext{float: left;font-weight: 400;margin-left: 2%;zoom: 1;font-size: 120%;margin-top: 6px;}
+    .tiptext.movie{color: #1a87cb}
+    .tiptext.live{color: #f37700}
+    .tiptext.read{color: #389eac}
+    .tiptext.group{color: #11969e}
+    .search input{margin-left: 5%;border: 1px solid #c3c3c3;width: 270px;height: 30px;}
+    .search button{text-decoration: none;border: 1px solid white;background-color: #00b51d;
+        color: white;top: 0;bottom: 0;margin-left: -5px;height: 30px;font-size: 90%}
+    .login{background: #c4edca;height: 268px;width: 100%;}
+    .login #bar{user-select:none;font-size: 90%;margin-top: 24px;border-bottom: 1px solid black;width: 134px}
+    .login form{border:0px solid #41ac52;width: 287px;height: 100%;background-color: #c4edca;
+        float: left;margin-left: 40%}
+    .login div input{box-shadow: none;padding-top: 8px;padding-bottom: 8px;width: 283px;margin-top: 11px;
+        font-size: 80%;}
+    .login form div button{border: 1px #41ac52 solid ;background-color: #41ac52;width: 287px;
+        border-radius: 3px;box-sizing: border-box;height: 34px;line-height: 34px;margin-top: 11px;
+        font-weight:400;padding:0;color: white;font-size: 90%;}
+    .login form #forgot{margin-top:3px;border-bottom: 1px solid #bbbbbb;}
+    .login form #forgot a{color: #cf0000;}
+    .login form #register a{color: black}
+    .login form div a{text-decoration: none;font-size: 75%;}
+    .recom{background-color: #f4f4f4;height: 253px;width: 80%;margin: 0 auto 1%;}
+    .recom ul{list-style: none;margin-block-start: 1em;margin-block-end: 1em;margin-inline-start: 0px;
+        margin-inline-end: 0px;padding-inline-start: 40px;display: block}
+    .recom ul li{display: inline-block;*display: inline;zoom: 1;width: auto;margin-left: 20px;
+        margin-top: 31px;vertical-align: top;text-align:center;font-size: 12px;letter-spacing: normal;word-spacing: normal;}
+    .recom ul li .title{line-height: 1.45;font-size: 13px;margin-bottom: 4px;word-wrap: break-word;}
+    .recom a{text-decoration: none ;color: #333333;}
+    .recom ul li .pic{height: 150px;width: 100px;border: 1px solid}
+    .recom ul li .score{color: #e59015}
+    .recom ul li .ticket{height:20px;border: 1px solid ;color: white;background-color: #1c8bd0;
+        margin-left:10%;margin-right:10%;width: 80%;margin-top: 4px;text-align: center;
+        line-height: 20px}
+    .recom ul li .ticket a{color: white}
+    .barber img{display:block;width:90%;margin: 0 auto;}
+</style>
+<body>
+<div class="top">
+    <div class="tip">
+        <a href="https://www.taopiaopiao.com"><text class="tiptext movie">电影购票</text></a>
+        <div class="search">
+            <form method="" action=""><input required oninvalid="setCustomValidity('请输入搜索内容')" maxlength="30"
+                                             autocomplete="off" size="12" type="search" name=""placeholder="  输入电影，音乐，图书">
+                <button type="submit">搜索</button></form>
+        </div>
+    </div>
+</div>
+<div class="login">
+    <form method="get" action="check_login">
+        <div id="bar">密码登录</div>
+        <div><input required maxlength="29"type="text"  name="user_nickname" placeholder="手机号/邮箱/登录名"></div>
+        <div><input required maxlength="18" minlength="6" name="pwd" type="password" placeholder="密码"></div>
+        <div><button type="submit">登陆</button></div>
+        <div id="forgot"><a href="">忘记密码？</a></div>
+        <div id="register"><a href="">注册新的账号</a></div>
+    </form>
+</div>
+
+<div class="barber"><img src="https://img.alicdn.com/tps/i2/TB1Qf3_FVXXXXacXFXXnZ6pJVXX-990-88.png"></div>
+</body>
+</html>

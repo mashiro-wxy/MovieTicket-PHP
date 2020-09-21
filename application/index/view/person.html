@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人主页</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .ticket{
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        font-size: 12px;
+        line-height: 30px;
+        text-align: center;
+        margin:0 12px 10px 0;
+        color:#f03d37;
+        background: url("__PUBLIC__/static/img/ticket-bg.png");
+    }
+    .back{
+        background-color: #00BBFF;
+        width: 100%;
+        height: 300px;
+    }
+    .panel{
+        margin-top: -260px;
+        z-index:99;
+    }
+</style>
+<body>
+<div class="container div_divider">
+    <hr class="hr_1">
+    <span class="btn btn-primary"><a href="show_main_page_info" style="color: whitesmoke"><-返回</a></span>
+    <hr class="hr_2">
+    <div class="row">
+        <div class="back"></div>
+
+        <div class="panel panel-default" style="width: 100%">
+            <div class="panel-body" style="text-align: center">
+                <img style="width: 200px; height: 200px" src="__PUBLIC__/static/img/person.png"><br>
+                <strong style="color: pink; font-size: 30px">{$name}</strong>
+            </div>
+        </div>
+
+            <div class="list-group div_article">
+                <span class="list-group-item active item_article_first">
+                    <h4 class="list-group-item-heading">
+                        购买记录
+                    </h4>
+                </span>
+                {foreach name="order_list" item="it" key="k" }
+                <div class="list-group-item item_article">
+                    <div class="row" style="margin-top:20px;">
+                        <img src="__PUBLIC__/static/{$it.movie_info.main_photo}"  class="img-thumbnail"  style="width:10%">
+                        <div style="padding-left: 10px;width: 40%">
+                            <h4>{$it.movie_info.movie_name}</h4>
+                            <h6>{$it.movie_info.movie_length}分钟 - {$it.movie_info.type}</h6>
+
+                            <div>
+                                {foreach name="it.seat" item="seat" key="k"}
+                                <span class="ticket">{$seat.seat_y}排{$seat.seat_x}座</span>
+                                {/foreach}
+                            </div>
+
+                        </div>
+                        <div style="float: right;width: 50%;text-align: right">
+                            <span><h5>{$it.cinema_info.cinema_name}</h5></span><br>
+                            <span>{$it.screening_room.screening_room_name}</span><br>
+                            <span>共:<span style="color: red; font-size: 20px">{$it.order_info.order_money}元</span></span><br>
+                            <span>购票时间：{$it.order_info.order_time}</span><br>
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
